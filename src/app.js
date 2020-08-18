@@ -1,7 +1,6 @@
 const express = require("express");
-const cors = require("cors");
-
 const { uuid } = require("uuidv4");
+const cors = require("cors");
 
 const app = express();
 
@@ -30,37 +29,37 @@ app.post("/repositories", (request, response) => {
   return response.json(repository)
 });
 
-app.put("/repositories/:id", async (request, response) => {
+app.put("/repositories/:id", (request, response) => {
   const { id } = request.params
   const { title, url, techs } = request.body
-  const index = repositories.findIndex(repository => repository.id === id);
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id);
 
-  const oldRepository = repositories[index];
+  const oldRepository = repositories[repositoryIndex];
 
-  if (!repositories[index]) {
+  if (!repositories[repositoryIndex]) {
     return response.status(400).send('Bad request')
   }
-  repositories[index] = {
+  repositories[repositoryIndex] = {
     ...oldRepository,
     title,
     url,
     techs,
   }
 
-  return response.json(repositories[index])
+  return response.json(repositories[repositoryIndex])
 
 });
 
 app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params
 
-  const index = repositories.findIndex(repository => repository.id === id)
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id)
 
-  if (!repositories[index]) {
+  if (!repositories[repositoryIndex]) {
     return response.status(400).send('Bad request')
   }
 
-  repositories.splice(index, 1)
+  repositories.splice(repositoryIndex, 1)
 
   return response.status(204).send()
 });
@@ -68,12 +67,12 @@ app.delete("/repositories/:id", (request, response) => {
 app.post("/repositories/:id/like", (request, response) => {
   const { id } = request.params
 
-  const index = repositories.findIndex(repository => repository.id === id)
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id)
 
-  if (!repositories[index]) {
+  if (!repositories[repositoryIndex]) {
     return response.status(400).send('Bad request')
   }
-  const repository = repositories[index]
+  const repository = repositories[repositoryIndex]
 
   repository.likes++
 
